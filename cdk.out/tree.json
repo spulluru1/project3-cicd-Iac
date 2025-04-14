@@ -491,7 +491,7 @@
                       "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
                       "aws:cdk:cloudformation:props": {
                         "deploymentId": {
-                          "Ref": "Proj3ApiDeploymentED607AD22804bcc321e47fada2df3f3284b5a52a"
+                          "Ref": "Proj3ApiDeploymentED607AD2bcc3e9d268ef00d05da8c5a38a072567"
                         },
                         "restApiId": {
                           "Ref": "Proj3ApiE4A3E26F"
@@ -522,67 +522,6 @@
                 "id": "Default",
                 "path": "Proj3InfraStack/Proj3Api/Default",
                 "children": {
-                  "OPTIONS": {
-                    "id": "OPTIONS",
-                    "path": "Proj3InfraStack/Proj3Api/Default/OPTIONS",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "Proj3InfraStack/Proj3Api/Default/OPTIONS/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
-                          "aws:cdk:cloudformation:props": {
-                            "apiKeyRequired": false,
-                            "authorizationType": "NONE",
-                            "httpMethod": "OPTIONS",
-                            "integration": {
-                              "type": "MOCK",
-                              "requestTemplates": {
-                                "application/json": "{ statusCode: 200 }"
-                              },
-                              "integrationResponses": [
-                                {
-                                  "statusCode": "204",
-                                  "responseParameters": {
-                                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                                    "method.response.header.Access-Control-Allow-Origin": "'*'",
-                                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
-                                  }
-                                }
-                              ]
-                            },
-                            "methodResponses": [
-                              {
-                                "statusCode": "204",
-                                "responseParameters": {
-                                  "method.response.header.Access-Control-Allow-Headers": true,
-                                  "method.response.header.Access-Control-Allow-Origin": true,
-                                  "method.response.header.Access-Control-Allow-Methods": true
-                                }
-                              }
-                            ],
-                            "resourceId": {
-                              "Fn::GetAtt": [
-                                "Proj3ApiE4A3E26F",
-                                "RootResourceId"
-                              ]
-                            },
-                            "restApiId": {
-                              "Ref": "Proj3ApiE4A3E26F"
-                            }
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
-                          "version": "2.128.0"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_apigateway.Method",
-                      "version": "2.128.0"
-                    }
-                  },
                   "attendance": {
                     "id": "attendance",
                     "path": "Proj3InfraStack/Proj3Api/Default/attendance",
@@ -620,32 +559,32 @@
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
                               "aws:cdk:cloudformation:props": {
-                                "apiKeyRequired": false,
                                 "authorizationType": "NONE",
                                 "httpMethod": "OPTIONS",
                                 "integration": {
                                   "type": "MOCK",
                                   "requestTemplates": {
-                                    "application/json": "{ statusCode: 200 }"
+                                    "application/json": "{\"statusCode\": 200}"
                                   },
+                                  "passthroughBehavior": "NEVER",
                                   "integrationResponses": [
                                     {
-                                      "statusCode": "204",
+                                      "statusCode": "200",
                                       "responseParameters": {
-                                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                                        "method.response.header.Access-Control-Allow-Origin": "'*'",
-                                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+                                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST,GET'",
+                                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'"
                                       }
                                     }
                                   ]
                                 },
                                 "methodResponses": [
                                   {
-                                    "statusCode": "204",
+                                    "statusCode": "200",
                                     "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Methods": true,
                                       "method.response.header.Access-Control-Allow-Headers": true,
-                                      "method.response.header.Access-Control-Allow-Origin": true,
-                                      "method.response.header.Access-Control-Allow-Methods": true
+                                      "method.response.header.Access-Control-Allow-Origin": true
                                     }
                                   }
                                 ],
@@ -775,7 +714,7 @@
                                 "authorizationType": "NONE",
                                 "httpMethod": "POST",
                                 "integration": {
-                                  "type": "AWS_PROXY",
+                                  "type": "AWS",
                                   "uri": {
                                     "Fn::Join": [
                                       "",
@@ -799,8 +738,36 @@
                                       ]
                                     ]
                                   },
-                                  "integrationHttpMethod": "POST"
+                                  "integrationHttpMethod": "POST",
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "200",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                                      }
+                                    },
+                                    {
+                                      "statusCode": "400",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'"
+                                      }
+                                    }
+                                  ]
                                 },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "200",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Origin": true
+                                    }
+                                  },
+                                  {
+                                    "statusCode": "400",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Origin": true
+                                    }
+                                  }
+                                ],
                                 "resourceId": {
                                   "Ref": "Proj3Apiattendance935C390C"
                                 },

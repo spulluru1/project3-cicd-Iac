@@ -309,7 +309,7 @@
     "aws:cdk:path": "Proj3InfraStack/Proj3Api/Account"
    }
   },
-  "Proj3ApiDeploymentED607AD22804bcc321e47fada2df3f3284b5a52a": {
+  "Proj3ApiDeploymentED607AD2bcc3e9d268ef00d05da8c5a38a072567": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -320,8 +320,7 @@
    "DependsOn": [
     "Proj3ApiattendanceOPTIONSB2F43127",
     "Proj3ApiattendancePOSTE414E32C",
-    "Proj3Apiattendance935C390C",
-    "Proj3ApiOPTIONS91F69039"
+    "Proj3Apiattendance935C390C"
    ],
    "Metadata": {
     "aws:cdk:path": "Proj3InfraStack/Proj3Api/Deployment/Resource"
@@ -331,7 +330,7 @@
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "DeploymentId": {
-     "Ref": "Proj3ApiDeploymentED607AD22804bcc321e47fada2df3f3284b5a52a"
+     "Ref": "Proj3ApiDeploymentED607AD2bcc3e9d268ef00d05da8c5a38a072567"
     },
     "RestApiId": {
      "Ref": "Proj3ApiE4A3E26F"
@@ -343,52 +342,6 @@
    ],
    "Metadata": {
     "aws:cdk:path": "Proj3InfraStack/Proj3Api/DeploymentStage.prod/Resource"
-   }
-  },
-  "Proj3ApiOPTIONS91F69039": {
-   "Type": "AWS::ApiGateway::Method",
-   "Properties": {
-    "ApiKeyRequired": false,
-    "AuthorizationType": "NONE",
-    "HttpMethod": "OPTIONS",
-    "Integration": {
-     "IntegrationResponses": [
-      {
-       "ResponseParameters": {
-        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-        "method.response.header.Access-Control-Allow-Origin": "'*'",
-        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
-       },
-       "StatusCode": "204"
-      }
-     ],
-     "RequestTemplates": {
-      "application/json": "{ statusCode: 200 }"
-     },
-     "Type": "MOCK"
-    },
-    "MethodResponses": [
-     {
-      "ResponseParameters": {
-       "method.response.header.Access-Control-Allow-Headers": true,
-       "method.response.header.Access-Control-Allow-Origin": true,
-       "method.response.header.Access-Control-Allow-Methods": true
-      },
-      "StatusCode": "204"
-     }
-    ],
-    "ResourceId": {
-     "Fn::GetAtt": [
-      "Proj3ApiE4A3E26F",
-      "RootResourceId"
-     ]
-    },
-    "RestApiId": {
-     "Ref": "Proj3ApiE4A3E26F"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "Proj3InfraStack/Proj3Api/Default/OPTIONS/Resource"
    }
   },
   "Proj3Apiattendance935C390C": {
@@ -412,33 +365,33 @@
   "Proj3ApiattendanceOPTIONSB2F43127": {
    "Type": "AWS::ApiGateway::Method",
    "Properties": {
-    "ApiKeyRequired": false,
     "AuthorizationType": "NONE",
     "HttpMethod": "OPTIONS",
     "Integration": {
      "IntegrationResponses": [
       {
        "ResponseParameters": {
-        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-        "method.response.header.Access-Control-Allow-Origin": "'*'",
-        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST,GET'",
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'"
        },
-       "StatusCode": "204"
+       "StatusCode": "200"
       }
      ],
+     "PassthroughBehavior": "NEVER",
      "RequestTemplates": {
-      "application/json": "{ statusCode: 200 }"
+      "application/json": "{\"statusCode\": 200}"
      },
      "Type": "MOCK"
     },
     "MethodResponses": [
      {
       "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Methods": true,
        "method.response.header.Access-Control-Allow-Headers": true,
-       "method.response.header.Access-Control-Allow-Origin": true,
-       "method.response.header.Access-Control-Allow-Methods": true
+       "method.response.header.Access-Control-Allow-Origin": true
       },
-      "StatusCode": "204"
+      "StatusCode": "200"
      }
     ],
     "ResourceId": {
@@ -543,7 +496,21 @@
     "HttpMethod": "POST",
     "Integration": {
      "IntegrationHttpMethod": "POST",
-     "Type": "AWS_PROXY",
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Origin": "'*'"
+       },
+       "StatusCode": "200"
+      },
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Origin": "'*'"
+       },
+       "StatusCode": "400"
+      }
+     ],
+     "Type": "AWS",
      "Uri": {
       "Fn::Join": [
        "",
@@ -568,6 +535,20 @@
       ]
      }
     },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Origin": true
+      },
+      "StatusCode": "200"
+     },
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Origin": true
+      },
+      "StatusCode": "400"
+     }
+    ],
     "ResourceId": {
      "Ref": "Proj3Apiattendance935C390C"
     },
@@ -673,7 +654,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/12QQW/CMAyFfwv3kEHRJK6FadImTUNld+Smpni0cUWcoSrKf5+SMoF2ep/zkjzbhV4Wa72YwdXNTXOed1TrsBcwZwVXdwhupcPGmzOK2h7tjSbZgMOomtFCz02twxfUHaZbGaIi6HWoeDrLuuOOzJjKiaLqoK8b0OHVWyPENnmPvMNLT84R26jc6gDOoThdJlEwUAuCVxh1qNBJOVBOumNpDHsr6gWHjscebR7iodoLtLm9CSp07C8G02TqA+XETTJv9OfeQjJHZbi1JKzD9mjfGrRCMu6YO/WvTgsoRcCcUnKM9+/yNKkBsm169ell8PKYknjLtiHJi3iHH3ha6rVeHIrn5ezbEc0v3gr1qKtJfwFvFyZc1wEAAA=="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/12Qy2rDMBBFvyV7Rc2DQraOS6GF0uB0H8bSxJnGlkw0ajBC/14khabt6p47I81rJZerjVzM4OrmSp/nPbUy7BnUWcDVHYJby7D16ows6qO5UZEtOIxCTwYGq1sZPqDtMb3KEAXBIENjSyzrzvakpmQLRdHD0GqQ4dkbxWRNyv3mHV4Gco6sicKtD+AcspNVEgEjdcB4hUmGBh1XI+VOd6yUst6weMKxt9OAJi/xy+0ZujxegQad9ReFabMfc6tZ+A35ZHUKFYpC2c4QWxnqo3nRaJh42lnbi38+HaBiBnVKnWO818/bpAHIdOnXu+fR85+29dHU1mjifIhX+IKHpdzIxWH1uJx9OqL5xRumAWVT9Bu3gB8w1wEAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "Proj3InfraStack/CDKMetadata/Default"

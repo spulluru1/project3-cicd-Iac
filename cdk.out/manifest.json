@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/02898a9585f6fc556b422af9ffd6361453e3507b34d4eb0a6f400ba42098f2a9.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9c5e7dad35ff80dc166fba432c7507d9945fb5f43477d67a1bcdaa24a76ff9c6.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -93,7 +93,7 @@
         "/Proj3InfraStack/Proj3Api/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "Proj3ApiDeploymentED607AD22804bcc321e47fada2df3f3284b5a52a"
+            "data": "Proj3ApiDeploymentED607AD2bcc3e9d268ef00d05da8c5a38a072567"
           }
         ],
         "/Proj3InfraStack/Proj3Api/DeploymentStage.prod/Resource": [
@@ -106,12 +106,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "Proj3ApiEndpoint52EEC75D"
-          }
-        ],
-        "/Proj3InfraStack/Proj3Api/Default/OPTIONS/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "Proj3ApiOPTIONS91F69039"
           }
         ],
         "/Proj3InfraStack/Proj3Api/Default/attendance/Resource": [

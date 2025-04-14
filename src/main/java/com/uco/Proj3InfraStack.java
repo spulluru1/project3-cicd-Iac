@@ -102,14 +102,70 @@ public class Proj3InfraStack extends Stack {
         // API Gateway
         RestApi api = RestApi.Builder.create(this, "Proj3Api")
                 .restApiName("proj3-attendance-api")
-                .defaultCorsPreflightOptions(CorsOptions.builder()
-                        .allowOrigins(Cors.ALL_ORIGINS)
-                        .allowMethods(Cors.ALL_METHODS)
-                        .build())
                 .build();
 
         Resource attendance = api.getRoot().addResource("attendance");
-        attendance.addMethod("POST", new LambdaIntegration(attendanceLambda));
+        // OPTIONS method for preflight
+        attendance.addMethod("OPTIONS",
+                MockIntegration.Builder.create()
+                        .integrationResponses(Arrays.asList(IntegrationResponse.builder()
+                                .statusCode("200")
+                                .responseParameters(new HashMap<String, String>() {
+                                    {
+                                        put("method.response.header.Access-Control-Allow-Headers",
+                                                "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'");
+                                        put("method.response.header.Access-Control-Allow-Origin", "'*'");
+                                        put("method.response.header.Access-Control-Allow-Methods",
+                                                "'OPTIONS,POST,GET'");
+                                    }
+                                })
+                                .build()))
+                        .passthroughBehavior(PassthroughBehavior.NEVER)
+                        .requestTemplates(Collections.singletonMap("application/json", "{\"statusCode\": 200}"))
+                        .build(),
+                MethodOptions.builder()
+                        .methodResponses(Arrays.asList(MethodResponse.builder()
+                                .statusCode("200")
+                                .responseParameters(new HashMap<String, Boolean>() {
+                                    {
+                                        put("method.response.header.Access-Control-Allow-Headers", true);
+                                        put("method.response.header.Access-Control-Allow-Methods", true);
+                                        put("method.response.header.Access-Control-Allow-Origin", true);
+                                    }
+                                })
+                                .build()))
+                        .build());
+
+        // Lambda integration with integration responses
+        LambdaIntegration lambdaIntegration = LambdaIntegration.Builder.create(attendanceLambda)
+                .proxy(false) // Important: proxy(false) to control headers
+                .integrationResponses(Arrays.asList(
+                        IntegrationResponse.builder()
+                                .statusCode("200")
+                                .responseParameters(Collections.singletonMap(
+                                        "method.response.header.Access-Control-Allow-Origin", "'*'"))
+                                .build(),
+                        IntegrationResponse.builder()
+                                .statusCode("400")
+                                .responseParameters(Collections.singletonMap(
+                                        "method.response.header.Access-Control-Allow-Origin", "'*'"))
+                                .build()))
+                .build();
+
+        // Method response with headers allowed
+        attendance.addMethod("POST", lambdaIntegration, MethodOptions.builder()
+                .methodResponses(Arrays.asList(
+                        MethodResponse.builder()
+                                .statusCode("200")
+                                .responseParameters(Collections.singletonMap(
+                                        "method.response.header.Access-Control-Allow-Origin", true))
+                                .build(),
+                        MethodResponse.builder()
+                                .statusCode("400")
+                                .responseParameters(Collections.singletonMap(
+                                        "method.response.header.Access-Control-Allow-Origin", true))
+                                .build()))
+                .build());
 
         // Cognito Identity Pool
         CfnIdentityPool identityPool = CfnIdentityPool.Builder.create(this, "Proj3IdentityPool")
